@@ -19,7 +19,7 @@ var Player = function (userName, hp, inv) {
     }
 };
 
-var user = new Player(userName, null, null);
+var user = new Player();
 
 
 
@@ -73,24 +73,26 @@ console.log("Right on" + " " + userName + "!" + "" + "Enjoy the ballin party. ")
 
 
 //
-function partyBlueprint() {
-    if (water == true) {
+var partyBlueprint = function () {
+    if (user.inv.length === 3) {
         console.log("Deciding to take it easy huh? Thanks for not getting too drunk! It's always such a pain to deal with those rubes. ");
+        
     } else {
-        console.log("Enjoy the party! Feel free to mingle and let loose. Just remember not to get too drunk. You drove bruh! ")
-    };
-}
+        console.log("Hope you're enjoying the party! Feel free to mingle and let loose. Just remember not to get too drunk. You drove bruh! ");
+    }
+};
 
-console.log("Press" + " " + "'W'" + " " + "to walk")
+console.log("Press" + " " + "'W'" + " " + "to walk");
+var enemy;
 
 while (true) {
     var userInput = readlineSync.question("");
     userInput.toLowerCase();
     partyBlueprint();
-    if (userInput == "w") {
-        var chance = genNumInRange(0, 60);
+    if (userInput === "w") {
+        var chance = genNumInRange(0, 70);
         if (chance >= 50) {
-            var enemy = genEnemy();
+            enemy = genEnemy();
             enemy.print();
             while (user.hp > 0 && enemy.hitPoints > 0) {
                 console.log("Do you drink & talk or flee for some water");
@@ -98,20 +100,22 @@ while (true) {
                 if (input === "drink") /*input.includes("drink") && input.includes("talk")*/ {
                     var damage = genNumInRange(20, 70);
                     enemy.hitPoints -= damage;
-                    console.log("you'll need to do better than that! " + enemy.type + " " + "is still standing!")
+                    console.log("you'll need to do better than that! " + enemy.type + " " + "is still standing!");
                 } else {
-                    //flee
+                    user.inv.push(1);
+                    partyBlueprint();
+                    break;
                 }
-                //drunk friend turn
             }
             if (enemy.hitPoints <= 0) {
                 userName.toUpperCase();
-                console.log(userName + "! " + userName + "! " + userName + "!");
+                console.log("Looks like " + enemy.type + "isn't doing so well. They're down for the count! Go " + userName + "! ");
+
+            } else {
+                console.log("This is a test");
             }
-        } else {
-            console.log("This is a test");
+        } else if (input === "print") {
+            console.log(user.print);
         }
-    } else if (input == "print") {
-        player.print();
     }
 }
